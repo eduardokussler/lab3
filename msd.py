@@ -1,3 +1,7 @@
+##Counting sort funciona para strings
+##Mas não para lista de strings
+##Corrigir isso
+
 class radix_MSD:
   R = 25 #26 caracteres, posicao 0 a 25
   M = 15
