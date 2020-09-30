@@ -1,63 +1,61 @@
-##Counting sort funciona para strings
-##Mas não para lista de strings
-##Corrigir isso
-
 class radix_MSD:
-  R = 25 #26 caracteres, posicao 0 a 25
+  R = 26 #26 caracteres, posicao 0 a 25
   M = 15
-  aux = ''
+  aux = []
   def __init__(self):
     return None
 
+  def charAt(self, string, d):
+    if(d < len(string)):
+      return ord(string[d])-65
+    else:
+      return -1
+
   def insertion_sort(self, C, first, end):
-    key = 0
-    biggest = C[0]
-    i = 0
-    j = 0
-    for i in range(first+1, end):
+    if(end < first or first > len(C)):
+      return C
+    for i in range(first+1, end+1):
+      j = i-1
       key = C[i]
-      j = i - 1 
       while(j >= first and C[j] > key):
         C[j+1] = C[j]
-        j -= 1 
+        j -= 1
       C[j+1] = key
-    return "".join(C)
+    return C
   
-  
-  def counting_sort(self, A, low, hi, d):
-    C = [None] * (self.R +2) 
-    A = list(A)
-    B = [None] * len(A)
+     
+  def sort(self, A, low, hi, d, B):
+    C = [0] * (self.R+2)
+    if(hi <= low + self.M):
+      B = self.insertion_sort(A, low, hi)
+      return B
     for i in range(low, hi+1):
-      C[i] = 0
-    for i in range(0, self.R+1):
+      c = self.charAt(A[i], d)
+      C[c+2] += 1
+    for i in range(0, self.R-1):
       #ord retorna o codigo ascii do char
       #como só temos 26 chars, alinhando os caracteres
       # a = indice 0
       # b = indice 1...
-      C[ord(A[i])-65] += 1
+      C[i+1] += C[i]
     for i in range(low, hi+1):
-      B[C[ord(A[i])-65]] = A[i]
-    for j in range(len(A)-1, -1, -1):
-      B[C[ord(A[j])-65]-1] = A[j]
-      C[ord(A[j])-65] -= 1
-    return "".join(B)
-     
-  def sort(self, palavras, low, hi, d):
-    palavras = list(palavras)
-    if(hi <= low + self.M):
-      self.insertion_sort(palavras, low, hi)
-      return
-    palavras = self.counting_sort(palavras, low, hi, d)
+      c = self.charAt(A[i], d)
+      B[C[c+1]] = A[i]
+      C[c+1] += 1
+    for j in range(low, hi+1):
+      A[j] = B[j-low]
+    for i in range(0, self.R):
+      B = self.sort(A, low+C[i], low+C[i+1] - 1, d+1, B)
 
   def radix_sort(self, palavras):
     N = len(palavras)
     #Criando uma lista de Tamanho N vazia
-    self.aux = [None] * N
-    self.sort(palavras, 0, N-1, 0)
+    aux = [''] * N
+    aux = self.sort(palavras, 0, N-1, 0, aux)
+    return aux
 
-radix = radix_MSD()
-teste = ['ABACAXI', 'PATETA']
-
-teste = radix.counting_sort(teste,0, len(teste)-1, 0)
-print(teste)
+test = ['HOW', 'TO', 'HELP', 'PRODUCE', 'OUR', 'NEW', 'EBOOKS', 'AND', 'HOW', 'TO', 'SUBSCRIBE', 'TO', 'OUR', 'EMAIL', 'NEWSLETTER', 'TO', 'HEAR', 'ABOUT', 'NEW', 'EBOOKS']
+readx = radix_MSD()
+print(len(test))
+test = readx.radix_sort(test)
+print(test)
