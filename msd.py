@@ -28,6 +28,8 @@ class radix_MSD:
     C = [0] * (self.R+2)
     if(hi <= low + self.M):
       B = self.insertion_sort(A, low, hi)
+      if(B is None):
+        print("DEU RUIM")
       return B
     for i in range(low, hi+1):
       c = self.charAt(A[i], d)
@@ -45,7 +47,12 @@ class radix_MSD:
     for j in range(low, hi+1):
       A[j] = B[j-low]
     for i in range(0, self.R):
+      if(B is None):
+        print("DEU RUIM")
       B = self.sort(A, low+C[i], low+C[i+1] - 1, d+1, B)
+    return B
+
+
 
   def radix_sort(self, palavras):
     N = len(palavras)
