@@ -86,11 +86,13 @@ def main():
   frankestein_array = msd.radix_sort(frankestein_array)
   checkCorrectness(frankestein_array)
   escreveArq(frankestein_ordenado ,frankestein_array)
+  conta_ocorrencias(frankestein_ocorrencias, frankestein_array)
+
 
   war_and_peace_array = msd.radix_sort(war_and_peace_array)
   checkCorrectness(war_and_peace_array)
   escreveArq(war_and_peace_ordenado, war_and_peace_array)
-  
+  conta_ocorrencias(war_and_peace_ocorrencias, war_and_peace_array)
 
   frankestein.close()
   war_and_peace.close()
@@ -110,6 +112,19 @@ def escreveArq(file, arr):
     file.write(i)
     file.write("\n")
   
+def conta_ocorrencias(file, arr):
+  palavra_atual = ''
+  cont = 1
+  palavra_atual = arr[0]
+  for i in range(1, len(arr)):
+    if arr[i] == palavra_atual:
+      cont += 1
+    else:
+      file.write(f"{palavra_atual}  -  {cont} ocorrências\n")
+      cont = 1
+      palavra_atual = arr[i] 
+
+
 
 def checkCorrectness(palavras):
   n = len(palavras)
