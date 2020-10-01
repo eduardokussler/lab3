@@ -70,10 +70,10 @@ def main():
   #abrindo e criando os arquivos de saída
   frankestein = open('frankestein_clean.txt', 'r')
   war_and_peace = open('war_and_peace_clean.txt', 'r')
-  frankestein_ordenado = open('frankenstein_ordenado.txt', 'w')
-  frankestein_ocorrencias = open('frankestein_ocorrencias.txt', 'w')
-  war_and_peace_ordenado = open('war_and_peace_ordenado.txt', 'w')
-  war_and_peace_ocorrencias = open('war_and_peace_ocorrencias.txt', 'w')
+  frankestein_ordenado = open('frankenstein_ordenado.txt', 'w+')
+  frankestein_ocorrencias = open('frankestein_ocorrencias.txt', 'w+')
+  war_and_peace_ordenado = open('war_and_peace_ordenado.txt', 'w+')
+  war_and_peace_ocorrencias = open('war_and_peace_ocorrencias.txt', 'w+')
   
   #Caracteres a serem considerados
   caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -82,12 +82,15 @@ def main():
   frankestein_array = leArq(frankestein)
   war_and_peace_array = leArq(war_and_peace)
   #Chamando a ordenacao
-  print(frankestein_array.index('AND'))
   msd = radix_MSD()
   frankestein_array = msd.radix_sort(frankestein_array)
-  print(frankestein_array.index('AND'))
   checkCorrectness(frankestein_array)
+  escreveArq(frankestein_ordenado ,frankestein_array)
 
+  war_and_peace_array = msd.radix_sort(war_and_peace_array)
+  checkCorrectness(war_and_peace_array)
+  escreveArq(war_and_peace_ordenado, war_and_peace_array)
+  
 
   frankestein.close()
   war_and_peace.close()
@@ -101,6 +104,12 @@ def leArq(file):
   arr = file.read()
   arr = arr.split(' ')
   return arr
+
+def escreveArq(file, arr):
+  for i in arr:
+    file.write(i)
+    file.write("\n")
+  
 
 def checkCorrectness(palavras):
   n = len(palavras)
