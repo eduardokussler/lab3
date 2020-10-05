@@ -2,12 +2,12 @@
 # assim o radix-sort MSD é mais eficiente
 
 class radix_MSD:
-  R = 256 # 256 caracteres asc, posicao 0 a 25
+  R = 256 # 256 caracteres ascii
   M = 15
   aux = []
   def __init__(self):
     return None
-
+#Retorna o codigo ascii do caractere na posição d
   def charAt(self, string, d):
     if(d < len(string) and d >=0):
       return ord(string[d])
@@ -26,22 +26,16 @@ class radix_MSD:
       C[j+1] = key
     return C
   
-     
+
   def sort(self, A, low, hi, d, B):
     C = [0] * (self.R+2)
     if(hi <= low + self.M):
       A = self.insertion_sort(A, low, hi)
-      if(B is None):
-        print("DEU RUIM")
       return A
     for i in range(low, hi+1):
       c = self.charAt(A[i], d)
       C[c+2] += 1
     for i in range(0, self.R-1):
-      #ord retorna o codigo ascii do char
-      #como só temos 26 chars, alinhando os caracteres
-      # a = indice 0
-      # b = indice 1...
       C[i+1] += C[i]
     for i in range(low, hi+1):
       c = self.charAt(A[i], d)
@@ -50,8 +44,6 @@ class radix_MSD:
     for j in range(low, hi+1):
       A[j] = B[j-low]
     for i in range(0, self.R):
-      if(B is None):
-        print("DEU RUIM")
       A = self.sort(A, low+C[i], low+C[i+1] - 1, d+1, B)
     return A
 
@@ -75,8 +67,6 @@ def main():
   war_and_peace_ordenado = open('war_and_peace_ordenado.txt', 'w+')
   war_and_peace_ocorrencias = open('war_and_peace_ocorrencias.txt', 'w+')
   
-  #Caracteres a serem considerados
-  caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   
 
   frankestein_array = leArq(frankestein)
@@ -103,15 +93,20 @@ def main():
   
 #Le o arquivo file e copia cada palavra para uma posicao de arr
 def leArq(file):
+  # Lê o arquivo todo como se fosse uma string só
   arr = file.read()
+  # Separa as palavras
   arr = arr.split(' ')
   return arr
 
+#Escreve cada palavra em file, pulando uma linha
 def escreveArq(file, arr):
   for i in arr:
     file.write(i)
     file.write("\n")
-  
+
+# Conta as ocorrencias de cada palavra em arr e printa
+# as palavras com o numero de ocorrências em file
 def conta_ocorrencias(file, arr):
   palavra_atual = ''
   cont = 1
@@ -125,7 +120,7 @@ def conta_ocorrencias(file, arr):
       palavra_atual = arr[i] 
 
 
-
+#checa se o array está ordenado corretamente
 def checkCorrectness(palavras):
   n = len(palavras)
   for i in range(0, n-1):
@@ -134,4 +129,6 @@ def checkCorrectness(palavras):
       print(f"Palavra {palavras[i]} deveria estar depois de {palavras[i+1]}")
       return
   print("*** CORRECT ORDERING ***")
+
+#chamada principal
 main()
